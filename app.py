@@ -32,15 +32,16 @@ oem = st.sidebar.selectbox(
     },
 )
 
-psm = st.sidebar.selectbox(
-    "Page Segmentation Mode (PSM)",
-    {
-        "Single block of text (6)": 6,
-        "Auto (3)": 3,
-        "Single line (7)": 7,
-        "Sparse text (11)": 11,
-    },
-)
+psm_map = {
+    "Auto (3)": 3,
+    "Single block of text (6)": 6,
+    "Single line (7)": 7,
+    "Sparse text (11)": 11,
+}
+
+psm_label = st.sidebar.selectbox("Page Segmentation Mode (PSM)", list(psm_map.keys()))
+
+psm = psm_map[psm_label]
 
 st.sidebar.subheader("Preprocessing Filters")
 resize = st.sidebar.checkbox("Resize (2x)", True)
