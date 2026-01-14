@@ -41,7 +41,8 @@ psm_map = {
 
 psm_label = st.sidebar.selectbox("Page Segmentation Mode (PSM)", list(psm_map.keys()))
 
-psm = psm_map[psm_label]
+psm = int(psm_map[psm_label])
+
 
 st.sidebar.subheader("Preprocessing Filters")
 resize = st.sidebar.checkbox("Resize (2x)", True)
