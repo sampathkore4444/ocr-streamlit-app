@@ -4,6 +4,12 @@ import pytesseract
 import numpy as np
 from PIL import Image
 
+# Optional: pyperclip for clipboard copy
+try:
+    import pyperclip
+except ImportError:
+    pyperclip = None
+
 st.set_page_config(page_title="OCR Confidence App", layout="wide")
 st.title("📄 Smart OCR with Confidence")
 st.write("Upload an image, extract text, and see confidence for each word")
@@ -147,6 +153,14 @@ if uploaded_file:
             # Display text
             st.subheader("📄 Extracted Text (Preserved Lines)")
             st.text_area("OCR Output", text_output, height=300)
+
+            # Copy to clipboard button
+            if pyperclip:
+                if st.button("📋 Copy Text"):
+                    pyperclip.copy(text_output)
+                    st.success("Text copied to clipboard!")
+            else:
+                st.info("Install pyperclip locally to enable copy button.")
 
             # Display annotated image
             st.subheader("🔹 OCR Bounding Boxes (Color = Confidence)")
