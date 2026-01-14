@@ -27,12 +27,12 @@ st.sidebar.header("OCR Settings")
 
 language_map = {
     "English": "eng",
-    "Telugu": "tel",
-    "Hindi": "hin",
-    "Khmer": "khm",
-    "Thai": "tha",
-    "Vietnamese": "vie",
-    "English + Telugu": "eng+tel",
+    # "Telugu": "tel",
+    # "Hindi": "hin",
+    # "Khmer": "khm",
+    # "Thai": "tha",
+    # "Vietnamese": "vie",
+    # "English + Telugu": "eng+tel",
 }
 language = st.sidebar.selectbox("Select Language", list(language_map.keys()))
 
