@@ -14,7 +14,15 @@ st.write("Upload an image, extract text, and see confidence for each word")
 # -------------------------------
 st.sidebar.header("OCR Settings")
 
-language_map = {"English": "eng", "Telugu": "tel", "English + Telugu": "eng+tel"}
+language_map = {
+    "English": "eng",
+    "Telugu": "tel",
+    "Hindi": "hin",
+    "Khmer": "khm",
+    "Thai": "tha",
+    "Vietnamese": "vie",
+    "English + Telugu": "eng+tel",
+}
 language = st.sidebar.selectbox("Select Language", list(language_map.keys()))
 
 # OEM options
