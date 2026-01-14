@@ -77,7 +77,7 @@ if uploaded_file:
         st.image(img, width=True)
     with col2:
         st.subheader("Processed Image")
-        st.image(processed_img, use_column_width=True)
+        st.image(processed_img, width=True)
 
     # -------------------------------
     # OCR with confidence
