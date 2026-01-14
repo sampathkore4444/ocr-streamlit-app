@@ -4,8 +4,8 @@ import pytesseract
 import numpy as np
 from PIL import Image
 
-st.set_page_config(page_title="Tesseract OCR Confidence App", layout="wide")
-st.title("📄 Tesseract OCR with Line Formatting and Confidence")
+st.set_page_config(page_title="OCR Confidence App", layout="wide")
+st.title("📄 OCR with Line Formatting and Confidence")
 st.write("Upload an image, extract text, and see confidence for each word")
 
 # -------------------------------
