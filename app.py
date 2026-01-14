@@ -4,9 +4,11 @@ import pytesseract
 import numpy as np
 from PIL import Image
 
-st.set_page_config(page_title="Tesseract OCR App", layout="wide")
-st.title("📄 Tesseract OCR with Confidence Visualization")
-st.write("Upload an image, extract text, and see confidence levels for each word")
+st.set_page_config(page_title="Tesseract OCR Confidence App", layout="wide")
+st.title("📄 Tesseract OCR with Confidence Highlighting")
+st.write(
+    "Upload an image, extract text, and see which words Tesseract is confident about"
+)
 
 # -------------------------------
 # Sidebar - Settings
@@ -78,25 +80,25 @@ if uploaded_file:
     pytesseract.pytesseract.tesseract_cmd = "tesseract"
     selected_lang = language_map[language]
 
+    # Force LSTM for Telugu
     if "tel" in selected_lang:
-        oem = 3  # Force LSTM for Telugu
+        oem = 3
 
     custom_config = f"-l {selected_lang} --oem {oem} --psm {psm}"
 
     if st.button("🔍 Extract Text with Confidence"):
         try:
-            # Get OCR data with confidence
+            # OCR with data output
             data = pytesseract.image_to_data(
                 processed_img, config=custom_config, output_type=pytesseract.Output.DICT
             )
-
             text_output = ""
             annotated_img = cv2.cvtColor(processed_img, cv2.COLOR_GRAY2BGR)
 
             for i in range(len(data["text"])):
-                word = data["text"][i]
+                word = data["text"][i].strip()
                 conf = int(data["conf"][i])
-                if word.strip() != "":
+                if word != "":
                     text_output += f"{word} "
                     x, y, w, h = (
                         data["left"][i],
@@ -105,10 +107,15 @@ if uploaded_file:
                         data["height"][i],
                     )
 
-                    # Draw bounding box
-                    color = (
-                        (0, 255, 0) if conf > 80 else (0, 165, 255)
-                    )  # Green if high confidence, orange if medium
+                    # Confidence-based color
+                    if conf > 80:
+                        color = (0, 255, 0)  # Green = high confidence
+                    elif conf > 50:
+                        color = (0, 165, 255)  # Orange = medium confidence
+                    else:
+                        color = (0, 0, 255)  # Red = low confidence
+
+                    # Draw bounding box and confidence
                     cv2.rectangle(annotated_img, (x, y), (x + w, y + h), color, 2)
                     cv2.putText(
                         annotated_img,
@@ -124,8 +131,8 @@ if uploaded_file:
             st.subheader("📄 Extracted Text")
             st.text_area("OCR Output", text_output.strip(), height=300)
 
-            # Show annotated image
-            st.subheader("🔹 OCR Bounding Boxes with Confidence")
+            # Display annotated image
+            st.subheader("🔹 OCR Bounding Boxes (Color = Confidence)")
             st.image(annotated_img, channels="BGR", use_column_width=True)
 
             # Download text
