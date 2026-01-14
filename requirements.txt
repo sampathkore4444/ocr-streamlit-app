@@ -4,3 +4,4 @@ opencv-python-headless
 pillow
 numpy
 pyperclip
+pdf2image
