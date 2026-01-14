@@ -5,7 +5,9 @@ import numpy as np
 from PIL import Image
 
 st.set_page_config(page_title="OCR Confidence App", layout="wide")
-st.title("📄 Smart OCR: Telugu & English Text Extraction with Confidence Visualization")
+st.title(
+    "📄 Smart OCR: Multiple Languages Text Extraction with Confidence Visualization"
+)
 st.write("Upload an image, extract text, and see confidence for each word")
 
 # -------------------------------
