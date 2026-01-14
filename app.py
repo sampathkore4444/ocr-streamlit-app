@@ -150,12 +150,9 @@ if uploaded_file:
             st.text_area("OCR Output", text_output, height=300)
 
             # Copy to clipboard button
-            if pyperclip:
-                if st.button("📋 Copy Text"):
-                    pyperclip.copy(text_output)
-                    st.success("Text copied to clipboard!")
-            else:
-                st.info("Install pyperclip locally to enable copy button.")
+            if st.button("📋 Copy Text"):
+                pyperclip.copy(text_output)
+                st.success("Text copied to clipboard!")
 
             # Display annotated image
             st.subheader("🔹 OCR Bounding Boxes (Color = Confidence)")
