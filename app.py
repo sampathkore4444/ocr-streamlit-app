@@ -17,7 +17,7 @@ language_map = {"English": "eng", "Telugu": "tel", "English + Telugu": "eng+tel"
 language = st.sidebar.selectbox("Select Language", list(language_map.keys()))
 
 # OEM options
-oem_map = {"LSTM only (1)": 1, "Default (3)": 3}
+oem_map = {"Default (3)": 3, "LSTM only (1)": 1}
 oem_label = st.sidebar.selectbox("OCR Engine Mode (OEM)", list(oem_map.keys()))
 oem = oem_map[oem_label]
 
