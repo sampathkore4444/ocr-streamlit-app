@@ -4,9 +4,11 @@ import pytesseract
 import numpy as np
 from PIL import Image
 
-st.set_page_config(page_title="OCR Confidence App", layout="wide")
-st.title("📄 Smart OCR: Text Extraction with Confidence Visualization")
-st.write("Upload an image, extract text, and see confidence for each word")
+st.set_page_config(page_title="Tesseract OCR Confidence App", layout="wide")
+st.title("📄 Tesseract OCR with Confidence Highlighting")
+st.write(
+    "Upload an image, extract text, and see which words Tesseract is confident about"
+)
 
 # -------------------------------
 # Sidebar - Settings
@@ -46,7 +48,6 @@ if uploaded_file:
     image = Image.open(uploaded_file)
     img = np.array(image)
 
-    # Convert to grayscale
     if len(img.shape) == 3:
         img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     else:
@@ -54,9 +55,7 @@ if uploaded_file:
 
     processed_img = img_gray.copy()
 
-    # -------------------------------
     # Preprocessing
-    # -------------------------------
     if resize:
         processed_img = cv2.resize(
             processed_img, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC
@@ -68,9 +67,7 @@ if uploaded_file:
             processed_img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
         )
 
-    # -------------------------------
     # Display original vs processed
-    # -------------------------------
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Original Image")
@@ -79,9 +76,7 @@ if uploaded_file:
         st.subheader("Processed Image")
         st.image(processed_img, use_column_width=True)
 
-    # -------------------------------
-    # OCR with confidence
-    # -------------------------------
+    # OCR config
     pytesseract.pytesseract.tesseract_cmd = "tesseract"
     selected_lang = language_map[language]
 
@@ -93,28 +88,18 @@ if uploaded_file:
 
     if st.button("🔍 Extract Text with Confidence"):
         try:
-            # OCR with word-level data
+            # OCR with data output
             data = pytesseract.image_to_data(
                 processed_img, config=custom_config, output_type=pytesseract.Output.DICT
             )
             text_output = ""
             annotated_img = cv2.cvtColor(processed_img, cv2.COLOR_GRAY2BGR)
 
-            current_line = -1  # track line changes
-
             for i in range(len(data["text"])):
                 word = data["text"][i].strip()
                 conf = int(data["conf"][i])
-                line_num = data["line_num"][i]
-
                 if word != "":
-                    # Add a newline if the line changes
-                    if line_num != current_line:
-                        text_output += "\n"
-                        current_line = line_num
-
-                    text_output += word + " "
-
+                    text_output += f"{word} "
                     x, y, w, h = (
                         data["left"][i],
                         data["top"][i],
@@ -142,11 +127,9 @@ if uploaded_file:
                         1,
                     )
 
-            text_output = text_output.strip()
-
-            # Display text
-            st.subheader("📄 Extracted Text (Preserved Lines)")
-            st.text_area("OCR Output", text_output, height=300)
+            # Display extracted text
+            st.subheader("📄 Extracted Text")
+            st.text_area("OCR Output", text_output.strip(), height=300)
 
             # Display annotated image
             st.subheader("🔹 OCR Bounding Boxes (Color = Confidence)")
@@ -154,7 +137,7 @@ if uploaded_file:
 
             # Download text
             st.download_button(
-                "⬇ Download Text", text_output, file_name="ocr_output.txt"
+                "⬇ Download Text", text_output.strip(), file_name="ocr_output.txt"
             )
 
         except pytesseract.TesseractError as e:
