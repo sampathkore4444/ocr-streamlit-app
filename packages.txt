@@ -1,4 +1,7 @@
 tesseract-ocr
 tesseract-ocr-eng
 tesseract-ocr-tel
+tesseract-ocr-hin
 tesseract-ocr-khm
+tesseract-ocr-tha
+tesseract-ocr-vie
